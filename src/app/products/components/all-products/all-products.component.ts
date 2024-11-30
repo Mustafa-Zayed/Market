@@ -13,14 +13,16 @@ export class AllProductsComponent implements OnInit, OnDestroy {
   categories: any;
   subscriptions: Subscription[] = [];
   private productObserver: Observer<Object>;
-
+  loading: boolean = false;
   constructor(private productService: ProductService, private categoryService:CategoryService) {
     this.productObserver = {
       next: (data) => {
         this.products = data;
+        this.loading = false;
       },
 
       error: (err: Error) => {
+        this.loading = false;
         console.log(err.message);
         alert('Failed to Get Products');
       },
@@ -34,12 +36,14 @@ export class AllProductsComponent implements OnInit, OnDestroy {
   }
 
   getAllProducts() {
+    this.loading = true;
     let sub = this.productService.getAllProducts().subscribe(this.productObserver);
 
     this.subscriptions.push(sub);
   }
   
   getAllCategories() {
+    this.loading = true;
     let sub = this.categoryService.getAllCategories().subscribe(data => {
       this.categories = data;
     });
@@ -48,6 +52,7 @@ export class AllProductsComponent implements OnInit, OnDestroy {
   }
 
   getByCategory(category: string) {
+    this.loading = true;
     if (category === 'all') {
       this.getAllProducts();
       return;
