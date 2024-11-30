@@ -1,12 +1,11 @@
 <div class="box mt-5">
   <div class="my-2 w-25">
     <label for="" class="my-1">Categories:</label>
-    <select class="form-control">
-      <option value="1">option 1</option>
-      <option value="2">option 2</option>
-      <option value="3">option 3</option>
-      <option value="4">option 4</option>
+    <select #category class="form-control" (change)="getByCategory(category.value)">
+      <option value="all" selected>All</option>
+      <option *ngFor="let cat of categories" [value]="cat">{{cat}}</option>
     </select>
+
   </div>
 
   <div class="row">

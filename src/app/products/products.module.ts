@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AllProductsComponent } from './components/all-products/all-products.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { RouterModule, Routes } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [
   { path: '', redirectTo: 'all', pathMatch: 'full' },
@@ -17,7 +18,8 @@ const routes: Routes = [
   ],
   imports: [
     CommonModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    FormsModule
   ]
 })
 export class ProductsModule { }

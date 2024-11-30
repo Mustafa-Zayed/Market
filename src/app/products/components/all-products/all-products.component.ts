@@ -1,6 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { ProductService } from '../../services/product.service';
 import { Observer, Subscription } from 'rxjs';
+import { CategoryService } from '../../services/category.service';
 
 @Component({
   selector: 'app-all-products',
@@ -9,11 +10,12 @@ import { Observer, Subscription } from 'rxjs';
 })
 export class AllProductsComponent implements OnInit, OnDestroy {
   products: any;
+  categories: any;
   subscriptions: Subscription[] = [];
-  private observer: Observer<Object>;
+  private productObserver: Observer<Object>;
 
-  constructor(private productService: ProductService) {
-    this.observer = {
+  constructor(private productService: ProductService, private categoryService:CategoryService) {
+    this.productObserver = {
       next: (data) => {
         this.products = data;
       },
@@ -28,10 +30,29 @@ export class AllProductsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getAllProducts();
+    this.getAllCategories();
   }
 
   getAllProducts() {
-    let sub = this.productService.getAllProducts().subscribe(this.observer);
+    let sub = this.productService.getAllProducts().subscribe(this.productObserver);
+
+    this.subscriptions.push(sub);
+  }
+  
+  getAllCategories() {
+    let sub = this.categoryService.getAllCategories().subscribe(data => {
+      this.categories = data;
+    });
+
+    this.subscriptions.push(sub);
+  }
+
+  getByCategory(category: string) {
+    if (category === 'all') {
+      this.getAllProducts();
+      return;
+    }
+    let sub = this.categoryService.getByCategory(category).subscribe(this.productObserver);
 
     this.subscriptions.push(sub);
   }

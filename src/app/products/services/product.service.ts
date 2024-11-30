@@ -6,7 +6,6 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class ProductService {
-  private baseUrl = environment.API_URL;
 
   constructor(private http: HttpClient) {}
 
