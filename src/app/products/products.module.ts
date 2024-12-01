@@ -5,6 +5,7 @@ import { ProductDetailsComponent } from './components/product-details/product-de
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
+import { ProductComponent } from './components/product/product.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'all', pathMatch: 'full' },
@@ -15,7 +16,8 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AllProductsComponent,
-    ProductDetailsComponent
+    ProductDetailsComponent,
+    ProductComponent
   ],
   imports: [
     CommonModule,

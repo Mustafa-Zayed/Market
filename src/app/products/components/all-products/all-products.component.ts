@@ -14,6 +14,7 @@ export class AllProductsComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   private productObserver: Observer<Object>;
   loading: boolean = false;
+  
   constructor(private productService: ProductService, private categoryService:CategoryService) {
     this.productObserver = {
       next: (data) => {
@@ -51,8 +52,21 @@ export class AllProductsComponent implements OnInit, OnDestroy {
     this.subscriptions.push(sub);
   }
 
-  getByCategory(category: string) {
+  // getByCategory(category: string) {
+  //   this.loading = true;
+  //   if (category === 'all') {
+  //     this.getAllProducts();
+  //     return;
+  //   }
+  //   let sub = this.categoryService.getByCategory(category).subscribe(this.productObserver);
+
+  //   this.subscriptions.push(sub);
+  // }
+
+  getByCategory(event: any) {
     this.loading = true;
+    let category = event.target.value;
+
     if (category === 'all') {
       this.getAllProducts();
       return;
