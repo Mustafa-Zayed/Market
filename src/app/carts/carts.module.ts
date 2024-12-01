@@ -2,11 +2,13 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CartComponent } from './components/cart/cart.component';
 import { RouterModule, Routes } from '@angular/router';
+import { ProductsModule } from '../products/products.module';
+import { SharedModule } from '../shared/shared.module';
 
 const routes: Routes = [
-  // { path: '', component: CartComponent },
-  { path: '', redirectTo: 'cart' , pathMatch: 'full' },
-  { path: 'cart', component: CartComponent }
+  { path: '', component: CartComponent },
+  // { path: '', redirectTo: 'cart' , pathMatch: 'full' },
+  // { path: 'cart', component: CartComponent }
 ]
 
 @NgModule({
@@ -15,7 +17,9 @@ const routes: Routes = [
   ],
   imports: [
     CommonModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    ProductsModule,
+    SharedModule,
   ]
 })
 export class CartsModule { }

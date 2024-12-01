@@ -1,1 +1,7 @@
 <p>cart works!</p>
+
+<div class="row">
+  <div class="col-md-3 col-sm-12" *ngFor="let prod of cartItems">
+    <app-product [prod] = "prod"></app-product>
+  </div>
+</div>

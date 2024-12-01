@@ -32,6 +32,7 @@ export class AllProductsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    // console.log('All Product Component');
     this.getAllProducts();
     this.getAllCategories();
   }
@@ -74,6 +75,10 @@ export class AllProductsComponent implements OnInit, OnDestroy {
     let sub = this.categoryService.getByCategory(category).subscribe(this.productObserver);
 
     this.subscriptions.push(sub);
+  }
+
+  addToCart(prod: any) {
+    this.productService.addToCart(prod);
   }
 
   ngOnDestroy(): void {

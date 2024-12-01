@@ -7,11 +7,11 @@ import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { ProductComponent } from './components/product/product.component';
 
-const routes: Routes = [
-  { path: '', redirectTo: 'all', pathMatch: 'full' },
-  { path: 'all', component: AllProductsComponent },
-  { path: 'product/:id', component: ProductDetailsComponent }
-];
+// const routes: Routes = [
+//   { path: '', redirectTo: 'all', pathMatch: 'full' },
+//   { path: 'all', component: AllProductsComponent },
+//   { path: 'product/:id', component: ProductDetailsComponent }
+// ];
 
 @NgModule({
   declarations: [
@@ -21,9 +21,12 @@ const routes: Routes = [
   ],
   imports: [
     CommonModule,
-    RouterModule.forChild(routes),
+    // RouterModule.forChild(routes),
     SharedModule,
     FormsModule
+  ],
+  exports: [
+    ProductComponent
   ]
 })
 export class ProductsModule { }
