@@ -20,6 +20,7 @@ import { SelectComponent } from './components/select/select.component';
     HttpClientModule
   ],
   exports: [
+    RouterModule,
     HeaderComponent,
     SpinnerComponent,
     SelectComponent

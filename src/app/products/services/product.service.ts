@@ -14,6 +14,10 @@ export class ProductService {
     return this.http.get(`${environment.API_URL}/products`);
   }
 
+  getProductById(id: number) {
+    return this.http.get(`${environment.API_URL}/products/${id}`);
+  }
+
   addToCart(event: { product: any; quantity: number }) {
     let item = this.cartItems.find(
       (item: { product: any; quantity: number }) =>
