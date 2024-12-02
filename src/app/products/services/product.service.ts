@@ -14,12 +14,15 @@ export class ProductService {
     return this.http.get(`${environment.API_URL}/products`);
   }
 
-  addToCart(prod: any) {
-    if (this.cartItems.find((item: { id: any }) => item.id === prod.id)) {
-      alert('Item Already Added');
-      return;
-    }
-    this.cartItems.push(prod);
+  addToCart(event: { product: any; quantity: number }) {
+    let item = this.cartItems.find(
+      (item: { product: any; quantity: number }) =>
+        item.product.id === event.product.id
+    );
+
+    if (item) item.quantity += event.quantity;
+    else this.cartItems.push(event);
+
     localStorage.setItem('cartItems', JSON.stringify(this.cartItems));
     console.log(this.cartItems);
   }

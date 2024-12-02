@@ -8,8 +8,12 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class ProductComponent implements OnInit {
   @Input()
   prod: any;
+
   @Output()
   onAddToCart: EventEmitter<any> = new EventEmitter<any>();
+
+  addBtnFlag: boolean = false;
+  prodQuantity: number = 0;
 
   constructor() {}
 
@@ -18,6 +22,10 @@ export class ProductComponent implements OnInit {
   }
 
   addToCartClick(clickedProd: any) {
-    this.onAddToCart.emit(clickedProd); //this.prod works as well
+    this.onAddToCart.emit({
+      product: clickedProd,
+      quantity: this.prodQuantity,
+    }); //this.prod works as well
+    this.addBtnFlag = false;
   }
 }

@@ -77,8 +77,8 @@ export class AllProductsComponent implements OnInit, OnDestroy {
     this.subscriptions.push(sub);
   }
 
-  addToCart(prod: any) {
-    this.productService.addToCart(prod);
+  addToCart(event: { product: any, quantity: number }) {
+    this.productService.addToCart(event);
   }
 
   ngOnDestroy(): void {
