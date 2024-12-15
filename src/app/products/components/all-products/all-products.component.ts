@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { ProductService } from '../../services/product.service';
 import { Observer, Subscription } from 'rxjs';
 import { CategoryService } from '../../services/category.service';
@@ -14,7 +14,20 @@ export class AllProductsComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   private productObserver: Observer<Object>;
   loading: boolean = false;
-  
+
+  /**
+   * When { static: false } is used (default in most cases), Angular initializes the @ViewChild 
+   * reference after the view is rendered.
+   * This means you don’t need to explicitly implement AfterViewInit unless you want to interact
+   * with the @ViewChild property as soon as it is initialized.
+   * Since the modal is only shown when showModal() is called (a user action or another event), 
+   * the modalElement is already initialized by the time you access 
+   */
+  @ViewChild('modalId') modalElement!: ElementRef;
+  // Properties to hold modal data
+  product: any = null;
+  quantity: number = 0;
+
   constructor(private productService: ProductService, private categoryService:CategoryService) {
     this.productObserver = {
       next: (data) => {
@@ -79,8 +92,17 @@ export class AllProductsComponent implements OnInit, OnDestroy {
 
   addToCart(event: { product: any, quantity: number }) {
     this.productService.addToCart(event);
+    this.showAddedToCartModal(event);
   }
 
+  private showAddedToCartModal(event: { product: any, quantity: number }) {
+    this.product = event.product;
+    this.quantity = event.quantity;
+
+    const modal = new (window as any).bootstrap.Modal(this.modalElement.nativeElement);
+    modal.show();
+  }
+  
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }

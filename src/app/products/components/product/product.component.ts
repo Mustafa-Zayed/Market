@@ -13,7 +13,7 @@ export class ProductComponent implements OnInit {
   onAddToCart: EventEmitter<any> = new EventEmitter<any>();
 
   addBtnFlag: boolean = false;
-  prodQuantity: number = 0;
+  prodQuantity: number = 1;
 
   constructor() {}
 
@@ -22,6 +22,7 @@ export class ProductComponent implements OnInit {
   }
 
   addToCartClick(clickedProd: any) {
+    if (this.prodQuantity < 1) return;
     this.onAddToCart.emit({
       product: clickedProd,
       quantity: this.prodQuantity,

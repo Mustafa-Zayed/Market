@@ -19,6 +19,8 @@ export class ProductService {
   }
 
   addToCart(event: { product: any; quantity: number }) {
+    if (event.quantity < 1) return;
+    
     let item = this.cartItems.find(
       (item: { product: any; quantity: number }) =>
         item.product.id === event.product.id
