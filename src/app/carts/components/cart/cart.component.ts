@@ -1,5 +1,7 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CartService } from '../../services/cart.service';
+import { IProduct } from 'src/app/products/models/iproduct';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-cart',
@@ -7,13 +9,14 @@ import { CartService } from '../../services/cart.service';
   styleUrls: ['./cart.component.scss'],
 })
 export class CartComponent implements OnInit, OnDestroy {
-  cartItems: { product: any; quantity: number }[] = [];
+  cartItems: { product: IProduct; quantity: number }[] = [];
   totalPrice: number = 0;
   cartSentSuccessfully: boolean = false;
+  subscriptions: Subscription[] = [];
 
   // Properties to hold modal data
   @ViewChild('modalId') modalElement!: ElementRef;
-  deleteModalProd: any = null;
+  deleteModalProd: IProduct | undefined;
   delOrClearCartFlag: string = '';
 
   constructor(private cartService :CartService) {}
@@ -40,7 +43,7 @@ export class CartComponent implements OnInit, OnDestroy {
 
   plus(event: any) {
     const index = this.cartItems.findIndex(
-      (item: { product: any; quantity: number }) =>
+      (item: { product: IProduct; quantity: number }) =>
         item.product.id === event.product.id
     );
     this.cartItems[index].quantity += 1;
@@ -51,7 +54,7 @@ export class CartComponent implements OnInit, OnDestroy {
 
   minus(event: any) {
     const index = this.cartItems.findIndex(
-      (item: { product: any; quantity: number }) =>
+      (item: { product: IProduct; quantity: number }) =>
         item.product.id === event.product.id
     );
     this.cartItems[index].quantity -= 1;
@@ -74,7 +77,7 @@ export class CartComponent implements OnInit, OnDestroy {
     console.log(this.cartItems);
   }
 
-  showDeleteOrClearCartModal(delOrClearCartFlag: string, product?: any) {
+  showDeleteOrClearCartModal(delOrClearCartFlag: string, product?: IProduct) {
     this.delOrClearCartFlag = delOrClearCartFlag;
 
     this.deleteModalProd = product;
@@ -85,8 +88,8 @@ export class CartComponent implements OnInit, OnDestroy {
 
   deleteProductFromCart() {
     this.cartItems = this.cartItems.filter(
-      (item: { product: any; quantity: number }) =>
-        item.product.id !== this.deleteModalProd.id
+      (item: { product: IProduct; quantity: number }) =>
+        item.product.id !== this.deleteModalProd?.id
     )
 
     this.updateTotalAndLocalStorage();
@@ -101,7 +104,7 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   sendCart(){
-    this.cartService.sendCart(this.cartItems).subscribe(next => {
+    let sub = this.cartService.sendCart(this.cartItems).subscribe(next => {
       console.log(next);
       // this.clearCart();
       setTimeout(() => {
@@ -109,9 +112,12 @@ export class CartComponent implements OnInit, OnDestroy {
       }, 3000);
       this.cartSentSuccessfully = true;
     });
+
+    this.subscriptions.push(sub);
   }
 
   ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
     // localStorage.removeItem('cartItems');
     // this.cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
     // console.log(this.cartItems);

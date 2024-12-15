@@ -1,28 +1,30 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { IProduct } from '../models/iproduct';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
-  cartItems: any = [];
+  cartItems: { product: IProduct; quantity: number }[] = [];
 
   constructor(private http: HttpClient) {}
 
-  getAllProducts() {
-    return this.http.get(`${environment.API_URL}/products`);
+  getAllProducts() : Observable<IProduct>{
+    return this.http.get<IProduct>(`${environment.API_URL}/products`);
   }
 
-  getProductById(id: number) {
-    return this.http.get(`${environment.API_URL}/products/${id}`);
+  getProductById(id: number) : Observable<IProduct>{
+    return this.http.get<IProduct>(`${environment.API_URL}/products/${id}`);
   }
 
-  addToCart(event: { product: any; quantity: number }) {
+  addToCart(event: { product: IProduct; quantity: number }) {
     if (event.quantity < 1) return;
     
     let item = this.cartItems.find(
-      (item: { product: any; quantity: number }) =>
+      (item: { product: IProduct; quantity: number }) =>
         item.product.id === event.product.id
     );
 

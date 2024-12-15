@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { IProduct } from '../../models/iproduct';
 
 @Component({
   selector: 'app-product',
@@ -7,7 +8,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class ProductComponent implements OnInit {
   @Input()
-  prod: any;
+  prod!: IProduct;
 
   @Output()
   onAddToCart: EventEmitter<any> = new EventEmitter<any>();
@@ -21,7 +22,7 @@ export class ProductComponent implements OnInit {
     // console.log('Product Component');
   }
 
-  addToCartClick(clickedProd: any) {
+  addToCartClick(clickedProd: IProduct) {
     if (this.prodQuantity < 1) return;
     this.onAddToCart.emit({
       product: clickedProd,

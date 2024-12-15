@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { IProduct } from 'src/app/products/models/iproduct';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -8,7 +9,7 @@ import { environment } from 'src/environments/environment';
 export class CartService {
   constructor(private http: HttpClient) {}
 
-  sendCart(cartItems: { product: any; quantity: number }[]) {
+  sendCart(cartItems: { product: IProduct; quantity: number }[]) {
     let prodsIdAndQuantity: { productId: number; quantity: number }[] =[];
 
     // cartItems.forEach((item) =>

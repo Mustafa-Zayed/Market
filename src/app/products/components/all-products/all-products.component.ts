@@ -2,6 +2,7 @@ import { Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChang
 import { ProductService } from '../../services/product.service';
 import { Observer, Subscription } from 'rxjs';
 import { CategoryService } from '../../services/category.service';
+import { IProduct } from '../../models/iproduct';
 
 @Component({
   selector: 'app-all-products',
@@ -9,8 +10,8 @@ import { CategoryService } from '../../services/category.service';
   styleUrls: ['./all-products.component.scss'],
 })
 export class AllProductsComponent implements OnInit, OnDestroy {
-  products: any;
-  categories: any;
+  products: IProduct[] = [];
+  categories: string[] = [];
   subscriptions: Subscription[] = [];
   private productObserver: Observer<Object>;
   loading: boolean = false;
@@ -25,12 +26,12 @@ export class AllProductsComponent implements OnInit, OnDestroy {
    */
   @ViewChild('modalId') modalElement!: ElementRef;
   // Properties to hold modal data
-  product: any = null;
+  product: IProduct = {} as IProduct;
   quantity: number = 0;
 
   constructor(private productService: ProductService, private categoryService:CategoryService) {
     this.productObserver = {
-      next: (data) => {
+      next: (data:any) => {
         this.products = data;
         this.loading = false;
       },
@@ -90,12 +91,12 @@ export class AllProductsComponent implements OnInit, OnDestroy {
     this.subscriptions.push(sub);
   }
 
-  addToCart(event: { product: any, quantity: number }) {
+  addToCart(event: { product: IProduct, quantity: number }) {
     this.productService.addToCart(event);
     this.showAddedToCartModal(event);
   }
 
-  private showAddedToCartModal(event: { product: any, quantity: number }) {
+  private showAddedToCartModal(event: { product: IProduct, quantity: number }) {
     this.product = event.product;
     this.quantity = event.quantity;
 
